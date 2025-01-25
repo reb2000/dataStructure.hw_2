@@ -389,42 +389,6 @@ public class FibonacciHeap
 		return roots_num; 
 	}
 	
-	
-	// Print the heap's root list, showing each node's key and its children if they exist.
-	public void printHeap() {
-	    if (this.root_list == null) {
-	        System.out.println("Heap is empty.");
-	        return;
-	    }
-
-	    // Start from the first node in the root list
-	    HeapNode current = this.root_list;
-	    System.out.println("Heap nodes: ");
-	    
-	    do {
-	        System.out.print("Key: " + current.key);
-	        
-	        // If the node has children, display them
-	        if (current.child != null) {
-	            System.out.print(" | Children: ");
-	            HeapNode child = current.child;
-	            do {
-	                System.out.print(child.key + " ");
-	                child = child.next;
-	            } while (child != current.child);
-	        }
-	        System.out.println();
-	        
-	        current = current.next;
-	    } while (current != this.root_list);
-	    
-	    // Print the minimum key in the heap
-	    if (this.min != null) {
-	        System.out.println("Minimum key in heap: " + this.min.key);
-	    }
-	}
-
-	
 	/**
 	 * Class implementing a node in a Fibonacci Heap.
 	 *  
