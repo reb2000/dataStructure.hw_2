@@ -99,6 +99,7 @@ public class FibonacciHeap
         node.prev.next = node.next;
         node.next.prev = node.prev;
 		this.roots_num--;
+		this.n--;
     }
 
 	/**
@@ -124,8 +125,12 @@ public class FibonacciHeap
 	 */
 	public void consolidate() {
 		
+		if (this.n == 0) { // If the heap is empty, no need to consolidate
+	        return;
+	    }
+		
 		HeapNode[] Arr = new HeapNode[(int)(Math.log(this.n) * 2 + 1)];
-		if (this.roots_num == 0 || this.root_list == null) { return; }
+		if (this.roots_num == 0 || this.root_list == null) { return; }//heap is empty
 		HeapNode current = this.root_list;
 		int cnt = 0;
 		int original_roots_num = this.roots_num;
@@ -177,7 +182,7 @@ public class FibonacciHeap
 	            //increment cutsCount for each child cut
 	            this.cutsCount++;
 	            
-			} while (currentChild != firstChild);
+			} while (currentChild != firstChild);// since the list of children is circular
 			node.child = null;
 			node.rank = 0;
     	}
@@ -208,23 +213,22 @@ public class FibonacciHeap
 	 */
 	public void deleteMin()
 	{
-        if (this.min != null) {
-            if (this.min.child != null) {
+        if (this.min != null) { //if the heap is not empty
+            if (this.min.child != null) { //if the minimum has children, make them roots
 				this.make_children_roots(this.min);
             }
 			this.remove_from_root_list(this.min);
-			if (this.min == this.min.next && this.min.child == null) { //min_node is the only root with no children
+			if (this.min == this.min.next && this.min.child == null) { //min_node is the only root, it has no children
                 this.min = null;
                 this.root_list = null;
 				this.roots_num = 0;
-				this.n = 1;
+				this.n = 0;
             }
 			else{
 				this.min = this.min.next;
 				this.findNewMin();
 			}
             this.consolidate();
-			this.n--;
         }
     }
 
@@ -294,14 +298,17 @@ public class FibonacciHeap
 		if (x == this.min) {
 			this.deleteMin(); //deletes min and consolidates
 		}
-		else {
+		else { //x is not the minimum
 			if (x.child != null) {
 				this.make_children_roots(x);
 			}
-			this.remove_from_root_list(x);
-			this.n--;
+			//if (x.parent != null) { //x is not in the roots list
+	           // this.merge_root_list(x); //put x into the roots list
+			//}
+			this.remove_from_root_list(x); //delete x
 		}
 	}
+
 
 	/**
 	 * Return the total number of links.
@@ -417,5 +424,7 @@ public class FibonacciHeap
 	}
 
 }
+
+
 
 
